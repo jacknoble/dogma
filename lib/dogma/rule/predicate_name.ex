@@ -39,7 +39,7 @@ defmodule Dogma.Rule.PredicateName do
   end
 
   defp test_predicate(line) do
-    Regex.run(~r{\A(is|has)_(\w+)\?\Z}, line)
+    Regex.run(~r/\A(is|has)_(\w+)\?\Z/, line)
   end
 
   defp test_predicate({:unquote,_,_} , _meta, node, errors) do

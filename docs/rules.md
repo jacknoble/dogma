@@ -1,7 +1,7 @@
 # Dogma Rules
 
 These are the rules included in Dogma by default. Currently there are
-27 of them.
+28 of them.
 
 ## Contents
 
@@ -26,6 +26,7 @@ These are the rules included in Dogma by default. Currently there are
 * [PipelineStart](#pipelinestart)
 * [PredicateName](#predicatename)
 * [QuotesInString](#quotesinstring)
+* [RegexDelimiter](#regexdelimiter)
 * [Semicolon](#semicolon)
 * [TrailingBlankLines](#trailingblanklines)
 * [TrailingWhitespace](#trailingwhitespace)
@@ -411,6 +412,29 @@ Use s_sigil or S_sigil instead or string literals in these situation.
 
     # Good
     ~s(")
+
+
+### RegexDelimiter
+
+A rule that disallows Regular Expression sigils that use unconventional
+delimiters. By default the rule requires '/' to be used as the delimiter
+for all regex sigils. There is an exception for regexes which contain a '/'
+that would otherwise need to be escaped.
+
+The following are valid:
+  ~r/[a-z]/i
+  ~r/test/
+  ~r/
+    multiline-regex
+    /
+  ~r{some/path/}
+
+These are invalid:
+  ~r{[a-z]}
+  ~r(test)i
+
+This default can be overridden with the "delimiter" option in your mix config.
+Specify the leading character for paired delimiters like '(' or '{'.
 
 
 ### Semicolon

@@ -36,6 +36,7 @@ defmodule Dogma.RuleSet.All do
       UnlessElse              => [],
       VariableName            => [],
       WindowsLineEndings      => [],
+      RegexDelimiter          => [delimiter: "/"],
     }
   end
 end
