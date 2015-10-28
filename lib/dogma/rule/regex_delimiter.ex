@@ -55,16 +55,12 @@ defmodule Dogma.Rule.RegexDelimiter do
     regex_lines(rest, acc)
   end
 
-  defp check_delimiter({line, start_col, end_col} = pos, lines, delimiter) do
-    chars = get_regex_chars(pos, lines)
-    character_code = delimiter |> String.to_char_list |> hd
+  defp check_delimiter({line, _,_} = location, lines, delimiter) do
+    [ character_used | sigil_content ] = get_regex_chars(location, lines)
+    expected_character = delimiter |> String.to_char_list |> hd
 
-    delimiter_in_body? =
-      chars
-      |> Enum.slice(2, end_col - start_col - 1)
-      |> Enum.member?(character_code)
-
-    if Enum.at(chars, 1) != character_code && !delimiter_in_body? do
+    delimiter_in_content? = Enum.member?(sigil_content, expected_character)
+    if character_used != expected_character && !delimiter_in_content? do
       error(line, delimiter)
     end
   end
@@ -73,7 +69,7 @@ defmodule Dogma.Rule.RegexDelimiter do
     {_, line} = Enum.at(lines, line_num - 1)
     line
     |> String.to_char_list
-    |> Enum.slice(start_col, end_col - start_col)
+    |> Enum.slice(start_col + 1, end_col - start_col - 1)
   end
 
   defp error(line, delimiter) do
